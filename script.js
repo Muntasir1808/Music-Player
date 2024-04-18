@@ -4,7 +4,8 @@ const artist = document.getElementById("artist");
 const music = document.querySelector("audio");
 const progressContainer = document.getElementById("progress-container");
 const progress = document.getElementById("progress");
-
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
 const prevBtn = document.getElementById("prev");
 const playBtn = document.getElementById("play");
 const nextBtn = document.getElementById("next");
@@ -94,10 +95,33 @@ function updateProgressBar(e) {
   if (isPlaying) {
     // object destructuring
     const { duration, currentTime } = e.srcElement;
-    console.log(duration, currentTime);
+    // console.log(duration, currentTime);
     //update progress bar width
     const progressPercent = (currentTime / duration) * 100;
     progress.style.width = `${progressPercent}%`;
+    // calculate display for duration
+    const durationMinutes = Math.floor(duration / 60);
+    console.log('minutes', durationMinutes);
+    let durationSeconds = Math.floor(duration % 60);
+    if (durationSeconds < 10) {
+        durationSeconds = `0${durationSeconds}`;
+    }
+    console.log("seconds: ", durationSeconds);
+    // durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+    // The above code pops up Nan in the duration at the very beginning. To avoid this delay is necessary
+    if (durationSeconds) {
+        durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+    }
+
+    // calculate display for currentTime
+    const currentMinutes = Math.floor(currentTime / 60);
+    console.log('minutes', currentMinutes);
+    let currentSeconds = Math.floor(currentTime % 60);
+    if (currentSeconds < 10) {
+        currentSeconds = `0${currentSeconds}`;
+    }
+    console.log("seconds: ", currentSeconds);
+    currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
   }
 }
 
