@@ -101,12 +101,12 @@ function updateProgressBar(e) {
     progress.style.width = `${progressPercent}%`;
     // calculate display for duration
     const durationMinutes = Math.floor(duration / 60);
-    console.log('minutes', durationMinutes);
+    // console.log('minutes', durationMinutes);
     let durationSeconds = Math.floor(duration % 60);
     if (durationSeconds < 10) {
         durationSeconds = `0${durationSeconds}`;
     }
-    console.log("seconds: ", durationSeconds);
+    // console.log("seconds: ", durationSeconds);
     // durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
     // The above code pops up Nan in the duration at the very beginning. To avoid this delay is necessary
     if (durationSeconds) {
@@ -115,17 +115,34 @@ function updateProgressBar(e) {
 
     // calculate display for currentTime
     const currentMinutes = Math.floor(currentTime / 60);
-    console.log('minutes', currentMinutes);
+    // console.log('minutes', currentMinutes);
     let currentSeconds = Math.floor(currentTime % 60);
     if (currentSeconds < 10) {
         currentSeconds = `0${currentSeconds}`;
     }
-    console.log("seconds: ", currentSeconds);
+    // console.log("seconds: ", currentSeconds);
     currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
   }
+}
+
+// Set Progress Bar
+function setProgressBar(e) {
+    console.log(e);
+    // In an event, 'this' refers to the element that received the event
+    const width = this.clientWidth;
+    console.log("width", width);
+    const clickX = e.offsetX;
+    console.log('clickX', clickX);
+    const {duration} = music;
+    console.log(clickX / width);
+    console.log((clickX / width) * duration);
+    music.currentTime = (clickX / width) * duration;
 }
 
 // Event Listeners
 prevBtn.addEventListener("click", prevSong);
 nextBtn.addEventListener("click", nextSong);
 music.addEventListener("timeupdate", updateProgressBar);
+music.addEventListener("ended", nextSong);
+// Jumping to any portion of the song by clicking
+progressContainer.addEventListener('click', setProgressBar);
